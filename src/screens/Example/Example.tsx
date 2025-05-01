@@ -60,6 +60,21 @@ function Example({ route }: RootScreenProps<Paths.Example>) {
     toggleLanguage();
   };
 
+  const handleCrash = () => {
+    Alert.alert('Crash Triggered', 'This will cause a controlled crash for UXCam demo.');
+  
+    try {
+      RNUxcam.logEvent('Crash_Button_Clicked', 'Crash change button clicked');
+      setTimeout(() => {
+        throw new Error('💥 UXCam controlled crash demo');
+      }, 100);
+    } catch (e) {
+      const error = e as Error;
+      console.error('Controlled crash:', error);
+      RNUxcam.logEvent('Crash_Captured', { message: error.message });
+    }
+  };
+
   return (
     <SafeScreen>
       <ScrollView>
@@ -124,6 +139,14 @@ function Example({ route }: RootScreenProps<Paths.Example>) {
               testID="change-language-button"
             >
               <IconByVariant path="language" stroke={colors.purple500} />
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={handleCrash}
+              style={[components.buttonCircle, gutters.marginBottom_16]}
+              testID="crash-button"
+            >
+              <IconByVariant path="send" stroke={colors.purple500} />
             </TouchableOpacity>
           </View>
         </View>
