@@ -9,6 +9,29 @@ import { ThemeProvider } from '@/theme';
 import i18n from '@/translations';
 
 import Example from './Example';
+import { Paths } from '@/navigation/paths';
+import { RootStackParamList } from '@/navigation/types';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+const mockNavigation = {
+  navigate: jest.fn(),
+  replace: jest.fn(),
+  reset: jest.fn(),
+  dispatch: jest.fn(),
+  goBack: jest.fn(),
+  pop: jest.fn(),
+  popToTop: jest.fn(),
+  push: jest.fn(),
+  setParams: jest.fn(),
+  canGoBack: jest.fn(),
+  getParent: jest.fn(),
+  isFocused: jest.fn(),
+  getId: jest.fn(),
+  setOptions: jest.fn(),
+  addListener: jest.fn(),
+  removeListener: jest.fn(),
+  dangerouslyGetParent: jest.fn(),
+} as unknown as StackNavigationProp<RootStackParamList, Paths.Example>;
 
 describe('Example screen should render correctly', () => {
   let storage: MMKV;
@@ -34,7 +57,14 @@ describe('Example screen should render correctly', () => {
         <ThemeProvider storage={storage}>
           <I18nextProvider i18n={i18n}>
             <QueryClientProvider client={queryClient}>
-              <Example />
+            <Example
+              route={{
+                key: 'example-key',
+                name: Paths.Example,
+                params: { user: { id: 1, name: 'Test User' } },
+              }}
+              navigation={mockNavigation}
+            />
             </QueryClientProvider>
           </I18nextProvider>
         </ThemeProvider>
@@ -58,7 +88,14 @@ describe('Example screen should render correctly', () => {
         <ThemeProvider storage={storage}>
           <I18nextProvider i18n={i18n}>
             <QueryClientProvider client={queryClient}>
-              <Example />
+            <Example
+              route={{
+                key: 'example-key',
+                name: Paths.Example,
+                params: { user: { id: 1, name: 'Test User' } },
+              }}
+              navigation={mockNavigation}
+            />
             </QueryClientProvider>
           </I18nextProvider>
         </ThemeProvider>
